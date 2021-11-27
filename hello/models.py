@@ -77,6 +77,9 @@ class Course(models.Model):
     standing_prequisite = models.TextField(blank=True, null=True)
     standing_recommendation = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+    
     class Meta:
         managed = False
         db_table = 'course'
