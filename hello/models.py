@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.postgres.fields import IntegerRangeField
+from psycopg2.extras import NumericRange
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -72,14 +73,30 @@ class Course(models.Model):
     code = models.IntegerField(blank=True, null=True)
     department = models.ForeignKey('Department', models.DO_NOTHING, blank=True, null=True)
     name = models.TextField(blank=True, null=True)
-    credits = models.TextField(blank=True, null=True)  # This field type is a guess.
+    credits = IntegerRangeField(blank=True, null=True)  # This field type is a guess.
     description = models.TextField(blank=True, null=True)
     standing_prequisite = models.TextField(blank=True, null=True)
     standing_recommendation = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name
+    courses = models.Manager()
     
+    #returns a list of courses by name
+    def searchByName(self, name):
+        return list(Course.courses.filter(name__iexact=name))
+    
+    #returns a list of courses containing input words
+    def searchByWords(self, words):
+        return list(Course.courses.filter(name__contains=words))
+    
+    #returns a list of courses by their credits
+    def searchByCredits(self, credit):
+        return list(Course.courses.filter(credits__contains=NumericRange(credit, credit + 1)))
+    
+    #returns a course by its code and department
+    def searchByCode(self, department, code):
+        return list(Course.courses.filter(code=code).filter(department__abbreviation__iexact=department))
+    #return a course by its id
+    def searchByID(self, cid):
+        return Course.courses.filter(id = cid)[0]
     class Meta:
         managed = False
         db_table = 'course'
@@ -88,11 +105,29 @@ class Course(models.Model):
 class CoursePrerequisite(models.Model):
     course_id = models.IntegerField(primary_key=True)
     prerequisite_id = models.IntegerField()
-
+    #course_id = models.ForeignKey('Course', models.DO_NOTHING, related_name='cid')
+    #prerequisite_id = models.ForeignKey('Course', models.DO_NOTHING, related_name='preq')
+    #prerequisite_id = models.IntegerField()
+    prerequisite = models.Manager()
+    
+    #returns all prerequisites of input course
+    def searchPrerequisite(self, name):
+        course = Course.searchByName(Course, name)
+        prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course[0].id))
+        courses = list()
+        for preq in prerequisites:
+            courses.append(Course.searchByID(Course, preq.prerequisite_id))
+        for course in courses:
+            prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course.id))
+            for preq in prerequisites:
+                if not (Course.searchByID(Course, preq.prerequisite_id) in courses):
+                    courses.append(Course.searchByID(Course, preq.prerequisite_id))
+        return courses
+    
     class Meta:
         managed = False
         db_table = 'course_prerequisite'
-        unique_together = (('course_id', 'prerequisite_id'),)
+        unique_together = (('course_id', 'prerequisite_id'))
 
 
 class CourseRecommendation(models.Model):
