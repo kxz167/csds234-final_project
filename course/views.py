@@ -8,7 +8,6 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     return render(request, "index.html")
 
-
 def db(request):
 
     greeting = Greeting()
@@ -17,3 +16,13 @@ def db(request):
     greetings = Greeting.objects.all()
 
     return render(request, "db.html", {"greetings": greetings})
+
+
+def class_search(request):
+    return render(request, "search/class-search.html", {})
+
+def dep_viewer(request):
+    return render(request, "search/dep-viewer.html", {})
+
+def course_suggestion(request):
+    return render(request, "search/course-suggestion.html", {})

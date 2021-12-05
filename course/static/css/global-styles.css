@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+:root{
+    --nav-height: 70px;
+    --nav-height-stick: 69px;
+}
+
+html{
+    color: #0a304e;
+    background-color: white;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 87.5%;
+    font-weight: 400;
+    line-height: 1.42857;
+}
+
+body{
+    margin: 0;
+    
+    /* For footer sticky */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.preload *{
+    animation-duration: 0s !important;
+}
+
+.content{
+    padding: 0px 30px;
+}

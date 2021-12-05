@@ -1,0 +1,22 @@
+.banner{
+    width: 100%;
+    position: sticky;
+    top:var(--nav-height-stick);
+    z-index: 0;
+}
+
+.banner img{
+    width: 100%;
+}
+
+.after-banner{
+    position: relative;
+    top: 0;
+    background-color: white;
+    padding-top: 10px;
+}
+
+/* .before-banner{
+    position: relative;
+    top: 0;
+} */

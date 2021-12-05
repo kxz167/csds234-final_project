@@ -1,0 +1,23 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}"/>
+<div id="nav-wrapper">
+    <div id="navbar">
+        <div id="nav-left">
+            <!-- <span><a class="nav-link">CSDS 344/444 Encrypter:</a></span> -->
+            <a id="logo-long" class="nav-link" href="{% url 'index' %}"><img class="logo" src="{% static 'cwru-logo.png' %}"></a>
+            
+            <a id="logo-short" class="nav-link" href="{% url 'index' %}"><img class="logo" src="{% static 'cwru-logo-only.png' %}"></a>
+        </div>
+        <div id="nav-item-container">
+            <div class="nav-item">
+                <span><a class="nav-link" href="{% url 'class_search' %}">Class Search</a></span>
+            </div>
+            <div class="nav-item">
+                <span><a class="nav-link" href="{% url 'dep_viewer' %}">Dependency Visualizer</a></span> 
+            </div>
+            <div class="nav-item">
+                <span><a class="nav-link" href="{% url 'course_suggestion' %}">Course Suggestions</a></span> 
+            </div>
+        </div>
+    </div>
+</div>

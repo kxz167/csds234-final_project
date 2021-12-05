@@ -7,7 +7,7 @@ from django.contrib.postgres.fields import IntegerRangeField
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hello', '0001_initial'),
+        ('course', '0001_initial'),
     ]
 
     operations = [
