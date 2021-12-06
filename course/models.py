@@ -81,7 +81,7 @@ class Course(models.Model):
     
     #returns a list of courses by name
     def searchByName(self, name):
-        return list(Course.courses.filter(name__iexact=name))
+        return list(Course.courses.filter(name__icontains=name))
     
     #returns a list of courses containing input words
     def searchByWords(self, words):

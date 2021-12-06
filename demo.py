@@ -4,7 +4,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
-from hello.models import Course, CoursePrerequisite
+from course.models import Course, CoursePrerequisite
 
 #print(Course.searchByName(Course, 'Algorithms'))
 #print(Course.searchByWords(Course, 'Robot'))
