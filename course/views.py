@@ -29,17 +29,42 @@ def db(request):
 def class_search(request):
     results = None
     if(request.method=='POST'):
-        #Do stuff here.
+        args = request.POST
+
         print(request.POST)
-        results = Course.searchByWords(Course, request.POST['course_name'])
-        print(results)
+        # print(results)
+        query = Course.QueryExecuter()
+
+        if( args['credit_min']):
+            if( args['credit_max']):
+                query.searchByCreditRange(int(args['credit_min']), int(args['credit_max']))
+            else:                
+                query.searchByCredits(int(args['credit_min']))
+
+        if( args['code_min']):
+            if( args['code_max']):
+                # query.searchByCodeRange(int(args['code_min']), int(args['code_max']))
+                True
+            else:                
+                query.searchByCode(int(args['code_min']))
+
+        if( args['department']):
+            query.searchByDepartment(args['department'])
+
+        if( args['course_name']):
+            query.searchByWords(args['course_name'])
+
+        #Do stuff here.
     else:
         #New form
-        True
+        query = Course.QueryExecuter()
+        args = {}
     
-    return render(request, "search/class-search.html", {'results': results})
+    results = query.resultList()
+    print(results)
+    return render(request, "search/class-search.html", {'prev_query': args, 'results': results})
 
-def dep_viewer(request):
+def course_deps(request):
     return render(request, "search/dep-viewer.html", {})
 
 def course_suggestion(request):
