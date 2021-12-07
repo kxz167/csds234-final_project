@@ -121,8 +121,6 @@ class Course(models.Model):
         def resultList(self):
             return list(self.result)
     
-<<<<<<< HEAD
-=======
     #returns a list of courses containing input words
     def searchByWords(self, words):
         return list(Course.courses.filter(name__icontains=words))
@@ -137,7 +135,7 @@ class Course(models.Model):
     #return a course by its id
     def searchByID(self, cid):
         return Course.courses.filter(id = cid)[0]
->>>>>>> 57324d8f088154d872e0dfe6b1143468fed7cad2
+    
     class Meta:
         managed = False
         db_table = 'course'
