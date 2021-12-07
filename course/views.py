@@ -65,7 +65,35 @@ def class_search(request):
     return render(request, "search/class-search.html", {'prev_query': args, 'results': results})
 
 def course_deps(request):
-    return render(request, "search/dep-viewer.html", {})
+    results = None
+    args = None
+    adjacency = None
+    if(request.method=='POST'):
+        args = request.POST
+
+        print(request.POST)
+        # print(results)
+        results = CoursePrerequisite().searchPrerequisite(args['course_name'])
+        adjacency = CoursePrerequisite().searchPrerequisiteGraphDisplay(args['course_name'])
+
+        # if( args['course_name']):
+        #     query.searchByWords(args['course_name'])
+
+        #Do stuff here.
+    # else:
+        #New form
+        # query = Course.QueryExecuter()
+        # args = {}
+
+    print(results)
+    print(adjacency)
+    return render(request, "search/course-deps.html", {'prev_query': args, 'results': results, 'graph_results': adjacency})
+
+def avail_course(request):
+    return render(request, "search/avail-course.html", {})
 
 def course_suggestion(request):
     return render(request, "search/course-suggestion.html", {})
+
+def sample(request):
+    return render(request, "search/sample.html", {})

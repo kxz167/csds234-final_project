@@ -17,8 +17,10 @@ import course.views as vm
 urlpatterns = [
     path("", vm.index, name="index"),
     path("db/", vm.db, name="db"),
+    path("sample", vm.sample, name="sample"),
     path("class-search", vm.class_search, name="class_search"),
-    path("course_deps", vm.course_deps, name="course_deps"),
+    path("course-deps", vm.course_deps, name="course_deps"),
+    path("avail-course", vm.avail_course, name="avail_course"),
     path("course-suggestion", vm.course_suggestion, name="course_suggestion"),
     # path("admin/", admin.site.urls),
 ]

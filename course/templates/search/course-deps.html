@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{%load static%}
+{%block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/pagestyles/class-search.css'%}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/pagestyles/course-deps.css'%}" />
+<script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+<script>
+    function toggleDesc(current){
+        // console.warn(current)
+        console.warn(current.nextElementSibling)
+        displayProp = current.nextElementSibling.style.display;
+        console.warn(displayProp)
+        if(displayProp == "revert"){
+            current.nextElementSibling.style.display = "none";
+        }
+        else{
+            current.nextElementSibling.style.display = "revert";
+        }
+    }
+</script>
+
+<form method="POST">
+    {%csrf_token%}
+    <div id="search">
+        <div id="search-container">
+            <div id="search-header">
+                <h1>Class Dependency Viewer</h1>
+            </div>
+            <div id="search-bar">
+                <input class="group-input" type="text" name="course_name" placeholder="Class name: Ex &quot;Advanced Algorithms&quot;" value="{{prev_query.course_name}}" required/>
+                <button type="submit">Search</button>
+            </div>
+            {% if results %}
+            <div id="results">
+                <h2>Dependency Graph</h2>
+                <div id="graph-vis">
+
+                </div>
+                <h2>Dependency List</h2>
+                <table id="result">
+                    <tr>
+                        <th>Department</th>
+                        <th>Code</th>
+                        <th>Course Title</th>
+                        <th>Credits</th>
+                    </tr>
+                    {% for class_result in results %}
+                    <tr onclick="toggleDesc(this)">
+                        <td class="tc-one">{{class_result.department.abbreviation}}</td>
+                        <td class="tc-two">{{class_result.code}}</td>
+                        <td class="tc-three">{{class_result.name}}</td>
+                        <td class="tc-four">{{class_result.credits}}</td>
+                        <!-- <td>{{class_result.description}}</td> -->
+                    </tr>
+                    <tr style="display: none;">
+                        <td class="res-desc" colspan="4">{{class_result.description}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</form>
+<script>
+    var a = {{graph_results|safe}};
+
+    nodes = [];
+    for(class_name in a){
+        nodes.push({key: class_name});
+    }
+
+    console.warn(nodes);
+
+    links = [];
+    for(const [key, val] of Object.entries(a)){
+        // console.warn("Key is: " + key);
+        // console.warn(val);
+        val.forEach(prereq => {
+            // let graphDict = {
+            //     key: prereq, 
+            //     parent: key, 
+            //     name: prereq 
+            // };
+            graphDict = {
+                from: key, to: prereq
+            }
+            // console.warn(graphDict);
+            links.push(graphDict);
+        });
+    }
+
+    console.warn(links);
+
+    console.warn(a);
+    //Go Diagram:
+    var $ = go.GraphObject.make;
+    var myDiagram = $(go.Diagram, "graph-vis",
+    {
+      "undoManager.isEnabled": true,
+      layout: $(go.LayeredDigraphLayout, // specify a Diagram.layout that arranges trees
+                { 
+                    direction: 90, 
+                    layerSpacing: 35,
+                    aggressiveOption: go.LayeredDigraphLayout.AggressiveMore
+                })
+    });
+
+    // the template we defined earlier
+    myDiagram.nodeTemplate =
+    $(go.Node, "Horizontal", { background: "#0a304e" },
+        $(go.TextBlock, "none", { margin: 12, stroke: "white", font: "bold 14px Titillium Web, sans-serif" },new go.Binding("text", "key"))
+    );
+
+    // the same model as before
+    // myDiagram.model = new go.TreeModel(
+    // [
+    //     { key: "1",              name: "Don Meow",   source: "cat1.png" },
+    //     { key: "2", parent: "1", name: "Demeter",    source: "cat2.png" },
+    //     { key: "3", parent: "1", name: "Copricat",   source: "cat3.png" },
+    //     { key: "4", parent: "3", name: "Jellylorum", source: "cat4.png" },
+    //     { key: "5", parent: "3", name: "Alonzo",     source: "cat5.png" },
+    //     { key: "6", parent: "2", name: "Munkustrap", source: "cat6.png" }
+    // ]);
+    // myDiagram.model = new go.TreeModel(
+    //     graphList
+    // )
+
+    myDiagram.model = new go.GraphLinksModel(
+        nodes, links
+    );
+</script>
+{%endblock content%}
