@@ -149,6 +149,51 @@ class Department(models.Model):
         managed = False
         db_table = 'department'
 
+class DsbsSuggestedPlan(models.Model):
+    id = models.IntegerField(primary_key=True)
+    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'dsbs_suggested_plan'
+
+class CsbsSuggestedPlan(models.Model):
+    id = models.IntegerField(primary_key=True)
+    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'csbs_suggested_plan'
+
+class CsbaSuggestedPlan(models.Model):
+    id = models.IntegerField(primary_key=True)
+    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'csba_suggested_plan'
+
+class CsTechnical(models.Model):
+    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cs_technical'
+
+class CsDepth(models.Model):
+    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cs_depth'
+
+class CsBreadth(models.Model):
+    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cs_breadth'
+
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
