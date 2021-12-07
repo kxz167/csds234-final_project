@@ -31,7 +31,7 @@ def class_search(request):
     if(request.method=='POST'):
         #Do stuff here.
         print(request.POST)
-        results = Course.searchByName(Course, request.POST['course_name'])
+        results = Course.searchByWords(Course, request.POST['course_name'])
         print(results)
     else:
         #New form

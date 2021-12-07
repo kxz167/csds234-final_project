@@ -45,6 +45,7 @@
                 <input class="group-input" type="text" name="course_name" placeholder="Class name"/>
                 <button type="submit">Search</button>
             </div>
+            {% if results %}
             <div id="results">
                 <table id="result">
                     <tr>
@@ -78,6 +79,7 @@
                 <div class="grid-desc">{{class_result.description}}</div>
                 {% endfor %} -->
             </div>
+            {% endif %}
         </div>
     </div>
 </form>
