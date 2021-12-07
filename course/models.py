@@ -98,10 +98,16 @@ class Course(models.Model):
             self.result = self.result.filter(credits__contains=NumericRange(credit, credit + 1))
             return self
         
-        #searchs a course by its code and department
-        def searchByCode(self, department, code):
-            self.result = self.result.filter(code=code).filter(department__abbreviation__iexact=department)
+        #searches a course by its code
+        def searchByCode(self, code):
+            self.result = self.result.filter(code=code)
             return self
+        
+        #searches a course by its department
+        def searchByDepartment(self, department):
+            self.result = self.result.filter(department__abbreviation__iexact=department)
+            return self
+        
         #return a course by its id
         def searchByID(self, cid):
             self.result = self.result.filter(id = cid)[0]
@@ -114,12 +120,23 @@ class Course(models.Model):
         
         #search by range of credits
         def searchByCreditRange(self, leftBound, rightBound):
-            for i in range(leftBound, rightBound):
-                self.searchByCredits(self, i)
+            self.result = self.result.filter(credits__overlap=[leftBound, rightBound])
             return self
         
+        #search by range of codes
+        def searchByCodeRange(self, leftBound, rightBound):
+            self.result = self.result.filter(code__range=[leftBound, rightBound])
+            return self
+
+        #search courses able to take
+        #def searchCoursesAbleToTake        
         def resultList(self):
-            return list(self.result)
+            temp = list(self.result)
+            courses = list()
+            for course in temp:
+                if (course.code != None):
+                    courses.append(course)
+            return courses
     
     #returns a list of courses containing input words
     def searchByWords(self, words):
@@ -136,6 +153,10 @@ class Course(models.Model):
     def searchByID(self, cid):
         return Course.courses.filter(id = cid)[0]
     
+    #returns a list of courses by name
+    def searchByName(self, name):
+        return list(Course.courses.filter(name__iexact=name))
+
     class Meta:
         managed = False
         db_table = 'course'
@@ -162,6 +183,25 @@ class CoursePrerequisite(models.Model):
                 if not (Course.searchByID(Course, preq.prerequisite_id) in courses):
                     courses.append(Course.searchByID(Course, preq.prerequisite_id))
         return courses
+    
+    #return an adjacency list for prerequisite of input course
+    def searchPrerequisiteGraph(self, name):
+        result = {}
+        preqs = self.searchPrerequisite(self, name)
+        course = Course.searchByName(Course, name)
+        courses = list()
+        prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course[0].id))
+        for preq in prerequisites:
+            courses.append(Course.searchByID(Course, preq.prerequisite_id))
+        result[course[0]] = courses
+        for preq in preqs:
+            if not (preq in result):
+                courses = list()
+                prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=preq.id))
+                for pre in prerequisites:
+                    courses.append(Course.searchByID(Course, pre.prerequisite_id))
+                result[preq] = courses
+        return result
     
     class Meta:
         managed = False
