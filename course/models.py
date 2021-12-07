@@ -79,24 +79,48 @@ class Course(models.Model):
     standing_recommendation = models.TextField(blank=True, null=True)
     courses = models.Manager()
     
-    #returns a list of courses by name
-    def searchByName(self, name):
-        return list(Course.courses.filter(name__iexact=name))
+    class QueryExecuter:
+        def __init__(self):
+            self.result = Course.courses.all()
+        
+        #returns a list of courses by name
+        def searchByName(self, name):
+            self.result = self.result.filter(name__iexact=name)
+            return self
+        
+        #returns a list of courses containing input words
+        def searchByWords(self, words):
+            self.result = self.result.filter(name__contains=words)
+            return self
+        
+        #returns a list of courses by their credits
+        def searchByCredits(self, credit):
+            self.result = self.result.filter(credits__contains=NumericRange(credit, credit + 1))
+            return self
+        
+        #searchs a course by its code and department
+        def searchByCode(self, department, code):
+            self.result = self.result.filter(code=code).filter(department__abbreviation__iexact=department)
+            return self
+        #return a course by its id
+        def searchByID(self, cid):
+            self.result = self.result.filter(id = cid)[0]
+            return self
+        
+        #returns a course by its code and department
+        def searchByDeparment(self, department):
+            self.result = self.result.filter(department__abbreviation__iexact=department)
+            return self
+        
+        #search by range of credits
+        def searchByCreditRange(self, leftBound, rightBound):
+            for i in range(leftBound, rightBound):
+                self.searchByCredits(self, i)
+            return self
+        
+        def resultList(self):
+            return list(self.result)
     
-    #returns a list of courses containing input words
-    def searchByWords(self, words):
-        return list(Course.courses.filter(name__contains=words))
-    
-    #returns a list of courses by their credits
-    def searchByCredits(self, credit):
-        return list(Course.courses.filter(credits__contains=NumericRange(credit, credit + 1)))
-    
-    #returns a course by its code and department
-    def searchByCode(self, department, code):
-        return list(Course.courses.filter(code=code).filter(department__abbreviation__iexact=department))
-    #return a course by its id
-    def searchByID(self, cid):
-        return Course.courses.filter(id = cid)[0]
     class Meta:
         managed = False
         db_table = 'course'
