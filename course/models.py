@@ -90,7 +90,7 @@ class Course(models.Model):
         
         #returns a list of courses containing input words
         def searchByWords(self, words):
-            self.result = self.result.filter(name__contains=words)
+            self.result = self.result.filter(name__icontains=words)
             return self
         
         #returns a list of courses by their credits
