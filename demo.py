@@ -26,6 +26,12 @@ from course.models import Course, CoursePrerequisite
 # for course in level200Courses:
 #     print(course.code, ' ', course.name)
     
-credit34Courses = Course.QueryExecuter().searchByCreditRange(3, 5).resultList()
-for course in credit34Courses:
-    print(course.code, ' ', course.name)
+# credit34Courses = Course.QueryExecuter().searchByCreditRange(3, 5).resultList()
+# for course in credit34Courses:
+#     print(course.code, ' ', course.name)
+
+coursesAfter132 = Course.QueryExecuter().searchCoursesAbleToTake(['Introduction to Data Structures'])
+for course in coursesAfter132:
+    print(course.name)
+
+#print(Course.QueryExecuter().searchByName('Computer Networks I').resultList()[0].id)

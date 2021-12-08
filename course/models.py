@@ -128,8 +128,28 @@ class Course(models.Model):
             self.result = self.result.filter(code__range=[leftBound, rightBound])
             return self
 
-        #search courses able to take
-        #def searchCoursesAbleToTake        
+        #returns list of courses given their name
+        def coursesGivenNames(self, names):
+            courses = list()
+            for name in names:
+                courses.append(Course.courses.filter(name__iexact=name))
+            return courses
+        
+        #searches courses able to take
+        def searchCoursesAbleToTake(self, takenCoursesNames):
+            temp = list(self.result)
+            courses = list()
+            for course in temp:
+                prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course.id))
+                haveAllPreq = True
+                for preq in prerequisites:
+                    if (Course.searchByID(Course, preq.prerequisite_id) != None): 
+                        if not (Course.searchByID(Course, preq.prerequisite_id).name in takenCoursesNames):
+                            haveAllPreq = False
+                if (haveAllPreq):
+                    courses.append(course)
+            return courses    
+        
         def resultList(self):
             temp = list(self.result)
             courses = list()
@@ -151,7 +171,7 @@ class Course(models.Model):
         return list(Course.courses.filter(code=code).filter(department__abbreviation__iexact=department))
     #return a course by its id
     def searchByID(self, cid):
-        return Course.courses.filter(id = cid)[0]
+        return Course.courses.filter(id = cid)[0] if len(Course.courses.filter(id = cid)) > 0 else None
     
     #returns a list of courses by name
     def searchByName(self, name):
