@@ -167,15 +167,15 @@ class Course(models.Model):
         #returns list of ids of suggested courses
         def suggestedCourses(self, program):
             suggestedPlan = list()
-            if (program == 'CSBS'):
+            if (program == 'csbs'):
                 plan = CsbsSuggestedPlan.objects.all()
                 for plannedCourse in plan:
                     suggestedPlan.append(plannedCourse.course.id)
-            if (program == 'CSBA'):
+            if (program == 'csba'):
                 plan = CsbaSuggestedPlan.objects.all()
                 for plannedCourse in plan:
                     suggestedPlan.append(plannedCourse.course.id)
-            if (program == 'DSBS'):
+            if (program == 'dsbs'):
                 plan = DsbsSuggestedPlan.objects.all()
                 for plannedCourse in plan:
                     suggestedPlan.append(plannedCourse.course.id)        

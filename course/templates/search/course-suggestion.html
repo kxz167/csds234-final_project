@@ -10,14 +10,14 @@
     <div id="search">
         <div id="search-container">
             <div id="search-header">
-                <h1>Class Standing Suggestions</h1>
+                <h1>Class Program Suggestions</h1>
             </div>
             <div id="search-bar">
                 <input class="group-input" type="text" name="courses" placeholder="Taken Course List seperated by a comma..." value="{{prev_query.courses}}"/>
                 <select id="prog-sel" name="program">
-                    <option value="csba">Computer Science, BA</option>
-                    <option value="csbs">Computer Science, BS</option>
-                    <option value="dsbs">Data Science, BS</option>
+                    <option value="csbs" {% if prev_query.program == 'csbs' %}selected="selected"{% endif %}>Computer Science, BS</option>
+                    <option value="csba" {% if prev_query.program == 'csba' %}selected="selected"{% endif %}>Computer Science, BA</option>
+                    <option value="dsbs" {% if prev_query.program == 'dsbs' %}selected="selected"{% endif %}>Data Science, BS</option>
                 </select>
                 <button type="submit">Search</button>
             </div>

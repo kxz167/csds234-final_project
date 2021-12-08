@@ -18,6 +18,9 @@
                 <div class="form-filter-group">
                     Code: <input class="group-input" type="number" name="code_min" placeholder="Code" value="{{prev_query.code_min}}"/>-<input class="group-input" type="number" name="code_max" placeholder="Opt: Max" value="{{prev_query.code_max}}"/>
                 </div>
+                <div class="form-filter-group">
+                    <label for="id_exclude_token">Do not show taken courses:&nbsp;</label><input id="id_exclude_taken" type="checkbox" name="exclude_taken" {% if prev_query.exclude_taken %} checked="checked"{% endif %}/>
+                </div>
             </div>
         </div>
         <div id="search-container">

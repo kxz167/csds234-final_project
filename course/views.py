@@ -79,8 +79,12 @@ def avail_course(request):
         courses = [course.strip() for course in course_string.split(",") if course.strip()]
         print(courses)
 
+        # Exclude the taken courses:
+        exclude_taken = not 'exclude_taken' in args
+        print(exclude_taken)
+
         # Uncomment when implemented
-        results = query.searchCoursesAbleToTake(courses)
+        results = query.searchCoursesAbleToTake(courses, exclude_taken)
 
     print(results)
     return render(request, "search/avail-course.html", {'prev_query': args, 'results': results})
@@ -103,8 +107,8 @@ def course_suggestion(request):
         print(courses)
         print(program)
         # Uncomment when implemented
-        # result = query.suggestedCourse(program, courses)
-
+        results = query.suggestedCourse(courses, program)
+    print(results)
     return render(request, "search/course-suggestion.html", {'prev_query':args, 'results':results})
 
 def sample(request):
