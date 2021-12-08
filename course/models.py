@@ -136,7 +136,7 @@ class Course(models.Model):
             return courses
         
         #searches courses able to take
-        def searchCoursesAbleToTake(self, takenCoursesNames):
+        def searchCoursesAbleToTake(self, takenCoursesNames, includeTakenCourse):
             temp = list(self.result)
             courses = list()
             for course in temp:
@@ -148,8 +148,47 @@ class Course(models.Model):
                             haveAllPreq = False
                 if (haveAllPreq):
                     courses.append(course)
-            return courses    
+            return courses if includeTakenCourse else self.CoursesNotTaken(courses, takenCoursesNames)
         
+        #minus taken courses from returning courses
+        def CoursesNotTaken(self, courses, takenCoursesName):
+            result = list()
+            for course in courses:
+                if not (course.name in takenCoursesName):
+                    result.append(course)
+            return result
+        #transforms names of courses into ID
+        def Names2IDs(self, takenCoursesName):
+            IDs = list()
+            for name in takenCoursesName:
+                IDs.append(Course.searchByName(name).id)
+            return IDs
+        
+        #returns list of ids of suggested courses
+        def suggestedCourses(self, program):
+            suggestedPlan = list()
+            if (program == 'CSBS'):
+                plan = CsbsSuggestedPlan.objects.all()
+                for plannedCourse in plan:
+                    suggestedPlan.append(plannedCourse.course.id)
+            if (program == 'CSBA'):
+                plan = CsbaSuggestedPlan.objects.all()
+                for plannedCourse in plan:
+                    suggestedPlan.append(plannedCourse.course.id)
+            if (program == 'DSBS'):
+                plan = DsbsSuggestedPlan.objects.all()
+                for plannedCourse in plan:
+                    suggestedPlan.append(plannedCourse.course.id)        
+            return suggestedPlan
+        
+        #return a list of suggested course
+        def suggestedCourse(self, takenCoursesName, program):
+            result = list()
+            takenCoursesID = self.Names2IDs(takenCoursesName)
+            suggestedPlan = self.suggestedCourses(program)
+            return result
+        
+        # returns the list of result of this query
         def resultList(self):
             temp = list(self.result)
             courses = list()
