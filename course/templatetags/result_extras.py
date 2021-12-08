@@ -3,10 +3,18 @@ register = template.Library()
 
 @register.filter
 def credits_display(credits):
-    lowerBound = credits.lower
-    upperBound = credits.upper
-    # return if (lowerBound == upperBound - 1)
-    if(lowerBound == upperBound - 1):
-        return lowerBound
+    if(credits):
+        lowerBound = credits.lower
+        upperBound = credits.upper
+
+        return str(lowerBound) if (lowerBound == upperBound - 1) else str(lowerBound) +  " - " + str(upperBound - 1)
+
     else:
-        return str(lowerBound) +  " - " + str(upperBound - 1)
+        return ""
+
+@register.filter
+def remove_none(input):
+    if(input):
+        return input
+    else:
+        return ""
