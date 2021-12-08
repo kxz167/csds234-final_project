@@ -207,7 +207,7 @@ class CoursePrerequisite(models.Model):
     #return an adjacency list for prerequisite of input course
     def searchPrerequisiteGraph(self, name):
         result = {}
-        preqs = self.searchPrerequisite(self, name)
+        preqs = self.searchPrerequisite(name)
         course = Course.searchByName(Course, name)
         courses = list()
         prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course[0].id))
@@ -221,6 +221,25 @@ class CoursePrerequisite(models.Model):
                 for pre in prerequisites:
                     courses.append(Course.searchByID(Course, pre.prerequisite_id))
                 result[preq] = courses
+        return result
+
+    #return an adjacency list for prerequisite of input course
+    def searchPrerequisiteGraphDisplay(self, name):
+        result = {}
+        preqs = self.searchPrerequisite(name)
+        course = Course.searchByName(Course, name)
+        courses = list()
+        prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course[0].id))
+        for preq in prerequisites:
+            courses.append(Course.searchByID(Course, preq.prerequisite_id).name)
+        result[course[0].name] = courses
+        for preq in preqs:
+            if not (preq in result):
+                courses = list()
+                prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=preq.id))
+                for pre in prerequisites:
+                    courses.append(Course.searchByID(Course, pre.prerequisite_id).name)
+                result[preq.name] = courses
         return result
     
     class Meta:

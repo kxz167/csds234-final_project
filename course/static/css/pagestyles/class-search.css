@@ -80,6 +80,14 @@ form{
     column-gap: 10px; */
 }
 
+table#result{
+    width: 100%;
+}
+
+table#result tr{
+    cursor: pointer;
+}
+
 #results th{
     text-align: left;
     padding-right: 10px;
@@ -107,6 +115,7 @@ form{
     /* display: none; */
     padding: 10px;
     column-span: all;
+    white-space: pre-wrap;
 }
 
 .grid-header{

@@ -1,0 +1,49 @@
+{% if results %}
+<script>
+    function toggleDesc(current){
+        // console.warn(current)
+        console.warn(current.nextElementSibling)
+        displayProp = current.nextElementSibling.style.display;
+        console.warn(displayProp)
+        if(displayProp == "revert"){
+            current.nextElementSibling.style.display = "none";
+        }
+        else{
+            current.nextElementSibling.style.display = "revert";
+        }
+    }
+</script>
+<div id="results">
+    <table id="result">
+        <tr>
+            <th>Department</th>
+            <th>Code</th>
+            <th>Course Title</th>
+            <th>Credits</th>
+        </tr>
+        {% for class_result in results %}
+        <tr onclick="toggleDesc(this)">
+            <td class="tc-one">{{class_result.department.abbreviation}}</td>
+            <td class="tc-two">{{class_result.code}}</td>
+            <td class="tc-three">{{class_result.name}}</td>
+            <td class="tc-four">{{class_result.credits}}</td>
+            <!-- <td>{{class_result.description}}</td> -->
+        </tr>
+        <tr style="display: none;">
+            <td class="res-desc" colspan="4">{{class_result.description}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <!-- <div class="col-one grid-header">Department</div>
+    <div class="col-two grid-header">Code</div>
+    <div class="col-three grid-header">Course Title</div>
+    <div class="col-four grid-header">Credits</div>
+    {% for class_result in results %}
+    <div class="col-one">{{class_result.department.abbreviation}}</div>
+    <div class="col-two">{{class_result.code}}</div>
+    <div class="col-three">{{class_result.name}}</div>
+    <div class="col-four">{{class_result.credits}}</div>
+    <div class="grid-desc">{{class_result.description}}</div>
+    {% endfor %} -->
+</div>
+{% endif %}

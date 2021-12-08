@@ -22,10 +22,10 @@
         </div>
         <div id="search-container">
             <div id="search-header">
-                <h1>Class Search</h1>
+                <h1>Available Courses</h1>
             </div>
             <div id="search-bar">
-                <input class="group-input" type="text" name="course_name" placeholder="Class name" value="{{prev_query.course_name}}"/>
+                <input class="group-input" type="text" name="courses" placeholder="Taken Course List seperated by a comma..." value="{{prev_query.courses}}"/>
                 <button type="submit">Search</button>
             </div>
             {% include 'results.html' %}
