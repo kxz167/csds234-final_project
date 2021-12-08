@@ -16,11 +16,11 @@ from course.models import Course, CoursePrerequisite
 # for course in result:
 #     print(course.name)
 
-adjacency = CoursePrerequisite.searchPrerequisiteGraph(CoursePrerequisite, 'Advanced Algorithms')
-for course, preqs in adjacency.items():
-    print('Course: ',course.name)
-    for preq in preqs:
-        print(preq.name)
+# adjacency = CoursePrerequisite.searchPrerequisiteGraph(CoursePrerequisite, 'Advanced Algorithms')
+# for course, preqs in adjacency.items():
+#     print('Course: ',course.name)
+#     for preq in preqs:
+#         print(preq.name)
 
 # level200Courses = Course.QueryExecuter().searchByCodeRange(200, 299).resultList()
 # for course in level200Courses:
@@ -29,3 +29,7 @@ for course, preqs in adjacency.items():
 # credit34Courses = Course.QueryExecuter().searchByCreditRange(3, 5).resultList()
 # for course in credit34Courses:
 #     print(course.code, ' ', course.name)
+
+courses = Course.QueryExecuter().searchCoursesAbleToTake(['Modern Robot Programming'])
+for course in courses:
+    print(course.name)

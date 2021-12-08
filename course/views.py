@@ -80,7 +80,7 @@ def avail_course(request):
         print(courses)
 
         # Uncomment when implemented
-        result = query.searchCoursesAbleToTake(courses)
+        results = query.searchCoursesAbleToTake(courses)
 
     print(results)
     return render(request, "search/avail-course.html", {'prev_query': args, 'results': results})
