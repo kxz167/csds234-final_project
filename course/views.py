@@ -77,9 +77,10 @@ def avail_course(request):
         # Course list: 
         course_string = args['courses']
         courses = [course.strip() for course in course_string.split(",") if course.strip()]
+        print(courses)
 
         # Uncomment when implemented
-        # result = query.availableCourses(courses)
+        result = query.searchCoursesAbleToTake(courses)
 
     print(results)
     return render(request, "search/avail-course.html", {'prev_query': args, 'results': results})
