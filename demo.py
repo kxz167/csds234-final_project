@@ -6,7 +6,15 @@ django.setup()
 
 from course.models import Course, CoursePrerequisite
 
-#print(Course.searchByName(Course, 'Algorithms'))
+# print(Course.searchByName(Course, 'Algorithms'))
+for course in Course.searchByWords(Course, 'data'):
+    lowerBound = course.credits.lower
+    upperBound = course.credits.upper
+    if(lowerBound == upperBound - 1):
+        print(lowerBound)
+    else:
+        print(lowerBound, " - ", upperBound - 1)
+    # print (course.credits.lower, course.credits.upper)
 #print(Course.searchByWords(Course, 'Robot'))
 #print(Course.searchByCredits(Course, 0)[0])
 #print(Course.searchByCode(Course, 'CSDS', 310))
@@ -34,6 +42,6 @@ from course.models import Course, CoursePrerequisite
 # for course in courses:
 #     print(course.name)
 
-courses = Course.QueryExecuter().suggestedCourse(['Introduction to Programming in Java'], 'CSBS')
-for course in courses:
-    print(course.name)
+# courses = Course.QueryExecuter().suggestedCourse(['Introduction to Programming in Java'], 'CSBS')
+# for course in courses:
+#     print(course.name)

@@ -120,7 +120,7 @@ class Course(models.Model):
         
         #search by range of credits
         def searchByCreditRange(self, leftBound, rightBound):
-            self.result = self.result.filter(credits__overlap=[leftBound, rightBound])
+            self.result = self.result.filter(credits__overlap=[leftBound, rightBound + 1])
             return self
         
         #search by range of codes

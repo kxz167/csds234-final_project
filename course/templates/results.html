@@ -1,4 +1,5 @@
 {% if results %}
+{% load result_extras %}
 <script>
     function toggleDesc(current){
         // console.warn(current)
@@ -26,7 +27,7 @@
             <td class="tc-one">{{class_result.department.abbreviation}}</td>
             <td class="tc-two">{{class_result.code}}</td>
             <td class="tc-three">{{class_result.name}}</td>
-            <td class="tc-four">{{class_result.credits}}</td>
+            <td class="tc-four">{{class_result.credits|credits_display}}</td>
             <!-- <td>{{class_result.description}}</td> -->
         </tr>
         <tr style="display: none;">
