@@ -115,7 +115,7 @@ table#result tr{
     /* display: none; */
     padding: 10px;
     column-span: all;
-    white-space: pre-line;
+    white-space: pre-wrap;
 }
 
 .grid-header{

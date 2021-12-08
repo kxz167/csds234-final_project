@@ -4,13 +4,22 @@ from django.http import HttpResponse
 from .models import Greeting
 from .models import Course, CoursePrerequisite
 
-# print(Course.searchByName(Course, 'Algorithms'))
-#print(Course.searchByWords(Course, 'Robot'))
-#print(Course.searchByCredits(Course, 0)[0])
-#print(Course.searchByCode(Course, 'CSDS', 310))
-# courses = CoursePrerequisite.searchPrerequisite(CoursePrerequisite, 'Advanced Algorithms')
-# for course in courses:
-#     print(course.name)
+# Defines a simple filter that takes in arguments and whittles down the query.
+def simple_filter(query, args):
+    if( args['credit_min']):
+        if( args['credit_max']):
+            query.searchByCreditRange(int(args['credit_min']), int(args['credit_max']))
+        else:                
+            query.searchByCredits(int(args['credit_min']))
+
+    if( args['code_min']):
+        if( args['code_max']):
+            query.searchByCodeRange(int(args['code_min']), int(args['code_max']))
+        else:                
+            query.searchByCode(int(args['code_min']))
+
+    if( args['department']):
+        query.searchByDepartment(args['department'])
 
 # Create your views here.
 def index(request):
@@ -18,7 +27,6 @@ def index(request):
     return render(request, "index.html")
 
 def db(request):
-
     greeting = Greeting()
     greeting.save()
 
@@ -31,69 +39,72 @@ def class_search(request):
     if(request.method=='POST'):
         args = request.POST
 
-        print(request.POST)
-        # print(results)
+        # Create simple query:
         query = Course.QueryExecuter()
-
-        if( args['credit_min']):
-            if( args['credit_max']):
-                query.searchByCreditRange(int(args['credit_min']), int(args['credit_max']))
-            else:                
-                query.searchByCredits(int(args['credit_min']))
-
-        if( args['code_min']):
-            if( args['code_max']):
-                # query.searchByCodeRange(int(args['code_min']), int(args['code_max']))
-                True
-            else:                
-                query.searchByCode(int(args['code_min']))
-
-        if( args['department']):
-            query.searchByDepartment(args['department'])
-
+        simple_filter(query, args)
         if( args['course_name']):
-            query.searchByWords(args['course_name'])
-
-        #Do stuff here.
+            query.searchByWords(args['course_name'].strip())
     else:
-        #New form
         query = Course.QueryExecuter()
         args = {}
     
     results = query.resultList()
-    print(results)
     return render(request, "search/class-search.html", {'prev_query': args, 'results': results})
 
 def course_deps(request):
     results = None
     args = None
     adjacency = None
+
     if(request.method=='POST'):
         args = request.POST
 
-        print(request.POST)
-        # print(results)
         results = CoursePrerequisite().searchPrerequisite(args['course_name'])
         adjacency = CoursePrerequisite().searchPrerequisiteGraphDisplay(args['course_name'])
 
-        # if( args['course_name']):
-        #     query.searchByWords(args['course_name'])
-
-        #Do stuff here.
-    # else:
-        #New form
-        # query = Course.QueryExecuter()
-        # args = {}
-
-    print(results)
-    print(adjacency)
     return render(request, "search/course-deps.html", {'prev_query': args, 'results': results, 'graph_results': adjacency})
 
 def avail_course(request):
-    return render(request, "search/avail-course.html", {})
+    results = None
+    args = None
+    if(request.method=='POST'):
+        args = request.POST
+
+        # Create basic query:
+        query = Course.QueryExecuter()
+        simple_filter(query, args)
+
+        # Course list: 
+        course_string = args['courses']
+        courses = [course.strip() for course in course_string.split(",") if course.strip()]
+
+        # Uncomment when implemented
+        # result = query.availableCourses(courses)
+
+    print(results)
+    return render(request, "search/avail-course.html", {'prev_query': args, 'results': results})
 
 def course_suggestion(request):
-    return render(request, "search/course-suggestion.html", {})
+    results = None
+    args = None
+    if(request.method=='POST'):
+        args = request.POST
+
+        query = Course.QueryExecuter()
+
+        # program:
+        program = args['program']
+
+        # Course list: 
+        course_string = args['courses']
+        courses = [course.strip() for course in course_string.split(",") if course.strip()]
+
+        print(courses)
+        print(program)
+        # Uncomment when implemented
+        # result = query.suggestedCourse(program, courses)
+
+    return render(request, "search/course-suggestion.html", {'prev_query':args, 'results':results})
 
 def sample(request):
     return render(request, "search/sample.html", {})

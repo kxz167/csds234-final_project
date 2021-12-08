@@ -2,20 +2,6 @@
 {%load static%}
 {%block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/pagestyles/class-search.css'%}" />
-<script>
-    function toggleDesc(current){
-        // console.warn(current)
-        console.warn(current.nextElementSibling)
-        displayProp = current.nextElementSibling.style.display;
-        console.warn(displayProp)
-        if(displayProp == "revert"){
-            current.nextElementSibling.style.display = "none";
-        }
-        else{
-            current.nextElementSibling.style.display = "revert";
-        }
-    }
-</script>
 
 <form method="POST">
     {%csrf_token%}
@@ -36,36 +22,13 @@
         </div>
         <div id="search-container">
             <div id="search-header">
-                <h1>Class Search</h1>
+                <h1>Available Courses</h1>
             </div>
             <div id="search-bar">
-                <input class="group-input" type="text" name="course_name" placeholder="Class name" value="{{prev_query.course_name}}"/>
+                <input class="group-input" type="text" name="courses" placeholder="Taken Course List seperated by a comma..." value="{{prev_query.courses}}"/>
                 <button type="submit">Search</button>
             </div>
-            {% if results %}
-            <div id="results">
-                <table id="result">
-                    <tr>
-                        <th>Department</th>
-                        <th>Code</th>
-                        <th>Course Title</th>
-                        <th>Credits</th>
-                    </tr>
-                    {% for class_result in results %}
-                    <tr onclick="toggleDesc(this)">
-                        <td class="tc-one">{{class_result.department.abbreviation}}</td>
-                        <td class="tc-two">{{class_result.code}}</td>
-                        <td class="tc-three">{{class_result.name}}</td>
-                        <td class="tc-four">{{class_result.credits}}</td>
-                        <!-- <td>{{class_result.description}}</td> -->
-                    </tr>
-                    <tr style="display: none;">
-                        <td class="res-desc" colspan="4">{{class_result.description}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
+            {% include 'results.html' %}
         </div>
     </div>
 </form>

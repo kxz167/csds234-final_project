@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 {%load static%}
 {%block content %}
-<div class="content">
-    <h1>Course Suggestions</h1>
-</div>
+<link rel="stylesheet" type="text/css" href="{% static 'css/pagestyles/class-search.css'%}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/pagestyles/course-deps.css'%}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/pagestyles/course-suggestion.css'%}" />
+
+<form method="POST">
+    {%csrf_token%}
+    <div id="search">
+        <div id="search-container">
+            <div id="search-header">
+                <h1>Class Standing Suggestions</h1>
+            </div>
+            <div id="search-bar">
+                <input class="group-input" type="text" name="courses" placeholder="Taken Course List seperated by a comma..." value="{{prev_query.courses}}"/>
+                <select id="prog-sel" name="program">
+                    <option value="csba">Computer Science, BA</option>
+                    <option value="csbs">Computer Science, BS</option>
+                    <option value="dsbs">Data Science, BS</option>
+                </select>
+                <button type="submit">Search</button>
+            </div>
+            {% include 'results.html' %}
+        </div>
+    </div>
+</form>
 {%endblock content%}
