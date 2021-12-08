@@ -161,7 +161,7 @@ class Course(models.Model):
         def Names2IDs(self, takenCoursesName):
             IDs = list()
             for name in takenCoursesName:
-                IDs.append(Course.searchByName(name).id)
+                IDs.append(Course.searchByName(Course, name)[0].id)
             return IDs
         
         #returns list of ids of suggested courses
@@ -181,12 +181,64 @@ class Course(models.Model):
                     suggestedPlan.append(plannedCourse.course.id)        
             return suggestedPlan
         
+        #transforms taken courses to taken planned courses
+        def takenCourses2Planned(self, takenCoursesID):
+            result = list()
+            for courseID in takenCoursesID:
+                tempID = courseID
+                if (CsBreadth.objects.filter(course__id = tempID)):
+                    tempID = 111
+                elif (CsDepth.objects.filter(course__id = tempID)):
+                    tempID = 110
+                elif (CsTechnical.objects.filter(course__id = tempID)):
+                    tempID = 109
+                result.append(tempID)
+            return result
+        
+        #add elective course to input list
+        def addElective(self, id, result, takenIDs):
+            if (id == 111):
+                breadthCourses = CsBreadth.objects.all()
+                for breath in breadthCourses:
+                    if not (breath.course.id in takenIDs):
+                        result.append(breath.course.id)
+                        return
+            elif (id == 110):
+                depthCourses = CsDepth.objects.all()
+                for depth in depthCourses:
+                    if not (depth.course.id in takenIDs):
+                        result.append(depth.course.id)
+                        return
+            elif (id == 109):
+                technicalCourses = CsTechnical.objects.all()
+                for tech in technicalCourses:
+                    if not (tech.course.id in takenIDs):
+                        result.append(tech.course.id)
+                        return
+        
         #return a list of suggested course
         def suggestedCourse(self, takenCoursesName, program):
             result = list()
             takenCoursesID = self.Names2IDs(takenCoursesName)
             suggestedPlan = self.suggestedCourses(program)
-            return result
+            takenPlannedCourses = self.takenCourses2Planned(takenCoursesID)
+            print(takenPlannedCourses[0])
+            i = 0
+            for suggestID in suggestedPlan:
+                if (suggestID in takenPlannedCourses):
+                    takenPlannedCourses.remove(suggestID)
+                else:
+                    i += 1
+                    if (109 <= suggestID and suggestID <= 111):
+                        self.addElective(suggestID, result, takenCoursesID)
+                    else:
+                        result.append(suggestID)
+                if (i >= 5):
+                    break
+            courses = list()
+            for ID in result:
+                courses.append(Course.searchByID(Course, ID))
+            return courses
         
         # returns the list of result of this query
         def resultList(self):
@@ -331,21 +383,21 @@ class CsbaSuggestedPlan(models.Model):
         db_table = 'csba_suggested_plan'
 
 class CsTechnical(models.Model):
-    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+    course = models.ForeignKey('Course', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
         db_table = 'cs_technical'
 
 class CsDepth(models.Model):
-    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+    course = models.ForeignKey('Course', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
         db_table = 'cs_depth'
 
 class CsBreadth(models.Model):
-    course = models.ForeignKey(Course, models.DO_NOTHING, blank=True, null=True)
+    course = models.ForeignKey('Course', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False

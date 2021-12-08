@@ -30,6 +30,10 @@ from course.models import Course, CoursePrerequisite
 # for course in credit34Courses:
 #     print(course.code, ' ', course.name)
 
-courses = Course.QueryExecuter().searchCoursesAbleToTake(['Modern Robot Programming'])
+# courses = Course.QueryExecuter().searchCoursesAbleToTake(['Modern Robot Programming'])
+# for course in courses:
+#     print(course.name)
+
+courses = Course.QueryExecuter().suggestedCourse(['Introduction to Programming in Java'], 'CSBS')
 for course in courses:
     print(course.name)
