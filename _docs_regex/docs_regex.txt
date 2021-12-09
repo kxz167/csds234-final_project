@@ -1,0 +1,17 @@
+=IF(ISBLANK(cwru_cds_courses_test_scrape!E2), "", IF(REGEXMATCH(TO_TEXT(cwru_cds_courses_test_scrape!E2), "-"), CONCATENATE("[", REGEXEXTRACT(cwru_cds_courses_test_scrape!E2, "(?:[^\d]*(\d+)){1}") , "," , REGEXEXTRACT(cwru_cds_courses_test_scrape!E2, "(?:[^\d]*(\d+)){2}") + 1 , ")"), CONCATENATE("[", cwru_cds_courses_test_scrape!E2 , "," , cwru_cds_courses_test_scrape!E2 + 1 , ")")))
+
+=IF(ISBLANK(cwru_cds_courses_test_scrape!E2), 
+  "", 
+  IF(REGEXMATCH(TO_TEXT(cwru_cds_courses_test_scrape!E2), "-"), 
+    CONCATENATE("[", 
+      REGEXEXTRACT(cwru_cds_courses_test_scrape!E2, "(?:[^\d]*(\d+)){1}"),
+      ",", 
+      REGEXEXTRACT(cwru_cds_courses_test_scrape!E2, "(?:[^\d]*(\d+)){2}") + 1,
+    ")"), 
+    CONCATENATE("[", 
+      cwru_cds_courses_test_scrape!E2, 
+      ",", 
+      cwru_cds_courses_test_scrape!E2 + 1,
+    ")")
+  )
+)

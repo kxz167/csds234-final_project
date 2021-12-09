@@ -1,45 +1,46 @@
-# Python: Getting Started
+# CSDS 234: Structured and Unstructured Data:
+This final course project was completed by Escanord Le, and Kris Zhao. It is meant to be a search tool centered around CWRU CSDS courses listed on the general bulletin.
 
-A barebones Django app, which can easily be deployed to Heroku.
+## Running the project:
 
-This application supports the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
+### Local serving:
 
-## Running Locally
+In order to run the project, it can be run using python with the following steps:
 
-Make sure you have Python 3.10 [installed locally](https://docs.python-guide.org/starting/installation/). To push to Heroku, you'll need to install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli), as well as [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
-
-```sh
-$ git clone https://github.com/heroku/python-getting-started.git
-$ cd python-getting-started
-
-$ python3 -m venv getting-started
-$ pip install -r requirements.txt
-
-$ createdb python_getting_started
-
-$ python manage.py migrate
-$ python manage.py collectstatic
-
-$ heroku local
+```
+pip install requirements.txt
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+Then, you can launch the local server with:
 
-## Deploying to Heroku
-
-```sh
-$ heroku create
-$ git push heroku main
-
-$ heroku run python manage.py migrate
-$ heroku open
 ```
-or
+python manage.py runserver
+```
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+Then, navigate to `127.0.0.1:8000` if it is not taken, and you should see the home page for the application.
 
-## Documentation
+### Remote access:
 
-For more information about using Python on Heroku, see these Dev Center articles:
+Alternatively, this site will be published to Heroku, and can be accessed at:
 
-- [Python on Heroku](https://devcenter.heroku.com/categories/python)
+```
+https://csds234-final-project.herokuapp.com/
+```
+
+## Project structure directory overview:
+
+### _database:
+
+This includes the csv files that were used to load into psql (after cleaning) as well as the SQL to create the tables themselves.
+
+### _docs_regex
+
+This folder includes some sample and reference regex / formulas for data manipulation and cleaning.
+
+### course
+
+This folder includes the bulk of the work for the project. This includes the html, css, python files, ORM specifications, and view generators.
+
+### mysite
+
+The main importance inside the mysite folder is the `urls.py` file which tackles all of the routing to each template.
