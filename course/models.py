@@ -125,7 +125,7 @@ class Course(models.Model):
         
         #search by range of codes
         def searchByCodeRange(self, leftBound, rightBound):
-            self.result = self.result.filter(code__range=[leftBound, rightBound])
+            self.result = self.result.filter(code__range=[leftBound, rightBound + 1])
             return self
 
         #returns list of courses given their name
@@ -148,7 +148,11 @@ class Course(models.Model):
                             haveAllPreq = False
                 if (haveAllPreq):
                     courses.append(course)
-            return courses if includeTakenCourse else self.CoursesNotTaken(courses, takenCoursesNames)
+            result = list()
+            for course in courses:
+                if (course.code != None):
+                    result.append(course)
+            return result if includeTakenCourse else self.CoursesNotTaken(result, takenCoursesNames)
         
         #minus taken courses from returning courses
         def CoursesNotTaken(self, courses, takenCoursesName):
@@ -242,7 +246,7 @@ class Course(models.Model):
         
         # returns the list of result of this query
         def resultList(self):
-            temp = list(self.result)
+            temp = list(self.result.order_by('department', 'code'))
             courses = list()
             for course in temp:
                 if (course.code != None):
