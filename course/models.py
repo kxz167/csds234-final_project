@@ -139,12 +139,13 @@ class Course(models.Model):
         def searchCoursesAbleToTake(self, takenCoursesNames, includeTakenCourse):
             temp = list(self.result)
             courses = list()
+            takenCoursesIDs = self.Names2IDs(takenCoursesNames)
             for course in temp:
                 prerequisites = list(CoursePrerequisite.prerequisite.filter(course_id=course.id))
                 haveAllPreq = True
                 for preq in prerequisites:
                     if (Course.searchByID(Course, preq.prerequisite_id) != None): 
-                        if not (Course.searchByID(Course, preq.prerequisite_id).name in takenCoursesNames):
+                        if not (preq.prerequisite_id in takenCoursesIDs):
                             haveAllPreq = False
                 if (haveAllPreq):
                     courses.append(course)
@@ -206,18 +207,21 @@ class Course(models.Model):
                 for breath in breadthCourses:
                     if not (breath.course.id in takenIDs):
                         result.append(breath.course.id)
+                        takenIDs.append(breath.course.id)
                         return
             elif (id == 110):
                 depthCourses = CsDepth.objects.all()
                 for depth in depthCourses:
                     if not (depth.course.id in takenIDs):
                         result.append(depth.course.id)
+                        takenIDs.append(depth.course.id)
                         return
             elif (id == 109):
                 technicalCourses = CsTechnical.objects.all()
                 for tech in technicalCourses:
                     if not (tech.course.id in takenIDs):
                         result.append(tech.course.id)
+                        takenIDs.append(tech.course.id)
                         return
         
         #return a list of suggested course
