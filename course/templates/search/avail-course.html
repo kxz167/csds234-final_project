@@ -31,7 +31,9 @@
                 <input class="group-input" type="text" name="courses" placeholder="Taken Course List seperated by a comma..." value="{{prev_query.courses}}"/>
                 <button type="submit">Search</button>
             </div>
-            {% include 'results.html' %}
+            <div id="results">
+                {% include 'results.html' %}
+            </div>
         </div>
     </div>
 </form>

@@ -28,7 +28,9 @@
                 <input class="group-input" type="text" name="course_name" placeholder="Class name" value="{{prev_query.course_name}}"/>
                 <button type="submit">Search</button>
             </div>
-            {% include 'results.html' %}
+            <div id="results">
+                {% include 'results.html' %}
+            </div>
         </div>
     </div>
 </form>

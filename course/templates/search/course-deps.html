@@ -34,29 +34,9 @@
             <div id="results">
                 <h2>Dependency Graph</h2>
                 <div id="graph-vis">
-
                 </div>
                 <h2>Dependency List</h2>
-                <table id="result">
-                    <tr>
-                        <th>Department</th>
-                        <th>Code</th>
-                        <th>Course Title</th>
-                        <th>Credits</th>
-                    </tr>
-                    {% for class_result in results %}
-                    <tr onclick="toggleDesc(this)">
-                        <td class="tc-one">{{class_result.department.abbreviation}}</td>
-                        <td class="tc-two">{{class_result.code}}</td>
-                        <td class="tc-three">{{class_result.name}}</td>
-                        <td class="tc-four">{{class_result.credits}}</td>
-                        <!-- <td>{{class_result.description}}</td> -->
-                    </tr>
-                    <tr style="display: none;">
-                        <td class="res-desc" colspan="4">{{class_result.description}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                {% include 'results.html' %}
             </div>
             {% endif %}
         </div>

@@ -14,26 +14,24 @@
         }
     }
 </script>
-<div id="results">
-    <table id="result">
-        <tr>
-            <th>Department</th>
-            <th>Code</th>
-            <th>Course Title</th>
-            <th>Credits</th>
-        </tr>
-        {% for class_result in results %}
-        <tr onclick="toggleDesc(this)">
-            <td class="tc-one">{{class_result.department.abbreviation|remove_none}}</td>
-            <td class="tc-two">{{class_result.code|remove_none}}</td>
-            <td class="tc-three">{{class_result.name|remove_none}}</td>
-            <td class="tc-four">{{class_result.credits|credits_display}}</td>
-            <!-- <td>{{class_result.description}}</td> -->
-        </tr>
-        <tr style="display: none;">
-            <td class="res-desc" colspan="4">{{class_result.description|remove_none}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+<table id="result">
+    <tr>
+        <th>Department</th>
+        <th>Code</th>
+        <th>Course Title</th>
+        <th>Credits</th>
+    </tr>
+    {% for class_result in results %}
+    <tr onclick="toggleDesc(this)">
+        <td class="tc-one">{{class_result.department.abbreviation|remove_none}}</td>
+        <td class="tc-two">{{class_result.code|remove_none}}</td>
+        <td class="tc-three">{{class_result.name|remove_none}}</td>
+        <td class="tc-four">{{class_result.credits|credits_display}}</td>
+        <!-- <td>{{class_result.description}}</td> -->
+    </tr>
+    <tr style="display: none;">
+        <td class="res-desc" colspan="4">{{class_result.description|remove_none}}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endif %}
