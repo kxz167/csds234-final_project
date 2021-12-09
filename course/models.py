@@ -201,27 +201,24 @@ class Course(models.Model):
             return result
         
         #add elective course to input list
-        def addElective(self, id, result, takenIDs):
+        def addElective(self, id, result, takenIDs, ableToTakeCourses):
             if (id == 111):
-                breadthCourses = CsBreadth.objects.all()
-                for breath in breadthCourses:
-                    if not (breath.course.id in takenIDs):
-                        result.append(breath.course.id)
-                        takenIDs.append(breath.course.id)
+                for breath in ableToTakeCourses:
+                    if (not (breath.id in takenIDs)) and (CsBreadth.objects.filter(course__id__exact=breath.id)):
+                        result.append(breath.id)
+                        takenIDs.append(breath.id)
                         return
             elif (id == 110):
-                depthCourses = CsDepth.objects.all()
-                for depth in depthCourses:
-                    if not (depth.course.id in takenIDs):
-                        result.append(depth.course.id)
-                        takenIDs.append(depth.course.id)
+                for depth in ableToTakeCourses:
+                    if (not (depth.id in takenIDs)) and (CsDepth.objects.filter(course__id__exact=depth.id)):
+                        result.append(depth.id)
+                        takenIDs.append(depth.id)
                         return
             elif (id == 109):
-                technicalCourses = CsTechnical.objects.all()
-                for tech in technicalCourses:
-                    if not (tech.course.id in takenIDs):
-                        result.append(tech.course.id)
-                        takenIDs.append(tech.course.id)
+                for technical in ableToTakeCourses:
+                    if (not (technical.id in takenIDs)) and (CsTechnical.objects.filter(course__id__exact=technical.id)):
+                        result.append(technical.id)
+                        takenIDs.append(technical.id)
                         return
         
         #return a list of suggested course
@@ -230,6 +227,7 @@ class Course(models.Model):
             takenCoursesID = self.Names2IDs(takenCoursesName)
             suggestedPlan = self.suggestedCourses(program)
             takenPlannedCourses = self.takenCourses2Planned(takenCoursesID)
+            ableToTakeCourses = self.searchCoursesAbleToTake(takenCoursesName, False)
             print(takenPlannedCourses[0])
             i = 0
             for suggestID in suggestedPlan:
@@ -238,7 +236,7 @@ class Course(models.Model):
                 else:
                     i += 1
                     if (109 <= suggestID and suggestID <= 111):
-                        self.addElective(suggestID, result, takenCoursesID)
+                        self.addElective(suggestID, result, takenCoursesID, ableToTakeCourses)
                     else:
                         result.append(suggestID)
                 if (i >= 5):
