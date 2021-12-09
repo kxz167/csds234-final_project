@@ -94,13 +94,13 @@ CREATE TABLE cs_technical(
 );
 
 -- INSERTION OF CSV:
-\COPY department FROM 'Z:\csds234\final_project\database\department.csv' CSV HEADER;
-\COPY course FROM 'Z:\csds234\final_project\database\course.csv' CSV HEADER;
-\COPY course_prerequisite FROM 'Z:\csds234\final_project\database\course_prerequisite.csv' CSV;
-\COPY course_recommendation FROM 'Z:\csds234\final_project\database\course_recommendation.csv' CSV HEADER;
-\COPY csbs_suggested_plan FROM 'Z:\csds234\final_project\database\csbs_suggested_plan.csv' CSV HEADER;
-\COPY csba_suggested_plan FROM 'Z:\csds234\final_project\database\csba_suggested_plan.csv' CSV HEADER;
-\COPY dsbs_suggested_plan FROM 'Z:\csds234\final_project\database\dsbs_suggested_plan.csv' CSV HEADER;
-\COPY cs_breadth FROM 'Z:\csds234\final_project\database\cs_breadth.csv' CSV HEADER;
-\COPY cs_depth FROM 'Z:\csds234\final_project\database\cs_depth.csv' CSV HEADER;
-\COPY cs_technical FROM 'Z:\csds234\final_project\database\cs_technical.csv' CSV HEADER;
+\COPY department FROM 'Z:\csds234\final_project\heroku_app\_database\department.csv' CSV HEADER;
+\COPY course FROM 'Z:\csds234\final_project\heroku_app\_database\course.csv' CSV HEADER;
+\COPY course_prerequisite FROM 'Z:\csds234\final_project\heroku_app\_database\course_prerequisite.csv' CSV;
+\COPY course_recommendation FROM 'Z:\csds234\final_project\heroku_app\_database\course_recommendation.csv' CSV HEADER;
+\COPY csbs_suggested_plan FROM 'Z:\csds234\final_project\heroku_app\_database\csbs_suggested_plan.csv' CSV HEADER;
+\COPY csba_suggested_plan FROM 'Z:\csds234\final_project\heroku_app\_database\csba_suggested_plan.csv' CSV HEADER;
+\COPY dsbs_suggested_plan FROM 'Z:\csds234\final_project\heroku_app\_database\dsbs_suggested_plan.csv' CSV HEADER;
+\COPY cs_breadth FROM 'Z:\csds234\final_project\heroku_app\_database\cs_breadth.csv' CSV HEADER;
+\COPY cs_depth FROM 'Z:\csds234\final_project\heroku_app\_database\cs_depth.csv' CSV HEADER;
+\COPY cs_technical FROM 'Z:\csds234\final_project\heroku_app\_database\cs_technical.csv' CSV HEADER;
